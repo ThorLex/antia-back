@@ -18,7 +18,7 @@ export const swaggerOptions = {
     },
     servers: [
       {
-        url: process.env.PROXY,
+        url: process.env.PROXY_OTHER,
         description: "Production server",
       },
       {
