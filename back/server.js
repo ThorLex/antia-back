@@ -12,7 +12,7 @@ import {
 
 const app = express();
 app.use(helmet());
-
+app.set('trust proxy', 1);
 const swaggerSecurity = setupSwaggerSecurity();
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use(express.json());
@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré`);
-  console.log(`📖 Documentation: ${process.env.PROXY}${PORT}/api-docs`);
+  console.log(`📖 Documentation: ${process.env.PROXY}:${PORT}/api-docs`);
 
   if (process.env.NODE_ENV !== "production") {
     console.log(
