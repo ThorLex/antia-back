@@ -63,7 +63,7 @@ const sendSmsNotification = async (user, message) => {
     await twilioClient.messages.create({
       body: message,
       from: process.env.TWILIO_PHONE_NUMBER,
-      to: user.phoneNumber,  
+      to: user.phoneNumber,
     });
     console.log(`SMS sent successfully to user ${user._id}.`);
   } catch (error) {
@@ -75,8 +75,15 @@ const sendSmsNotification = async (user, message) => {
 exports.createReport = async (req, res) => {
   try {
     const { title, description, sourceURL } = req.body;
-    const user = await User.findById(req.user._id);
 
+    // Validate input
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ message: "Title and description are required" });
+    }
+
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -102,7 +109,7 @@ exports.createReport = async (req, res) => {
     });
 
     const savedReport = await report.save();
-    sendReportEmails(savedReport, user);
+    await sendReportEmails(savedReport, user);
     res.status(201).json(savedReport);
   } catch (err) {
     console.error("Error creating report:", err);
@@ -119,11 +126,14 @@ exports.getReportByCaseId = async (req, res) => {
       "user",
       "name email"
     );
+
     if (!report) {
       return res.status(404).json({ message: "Report not found" });
     }
+
     res.status(200).json(report);
   } catch (err) {
+    console.error("Error fetching report:", err);
     res
       .status(500)
       .json({ message: "Error fetching report", error: err.message });
@@ -185,12 +195,10 @@ exports.updateReportWithAiAnalysis = async (req, res) => {
     const updatedReport = await report.save();
     res.status(200).json(updatedReport);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        message: "Error updating report with AI analysis",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Error updating report with AI analysis",
+      error: err.message,
+    });
   }
 };
 
