@@ -1,7 +1,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,8 +18,12 @@ export const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
-        description: "Development server",
+        url: process.env.PROXY,
+        description: "Production server",
+      },
+      {
+        url: `http://localhost:${process.env.PORT}`,
+        description: "Development server/Testing server",
       },
     ],
     tags: [
