@@ -54,14 +54,16 @@ const sendReportEmails = async (report, user) => {
 // --- Helper function to send SMS ---
 const sendSmsNotification = async (user, message) => {
   if (!user.phoneNumber || !process.env.TWILIO_PHONE_NUMBER) {
-    console.log(`Cannot send SMS to user ${user._id}, no phone number or Twilio config.`);
+    console.log(
+      `Cannot send SMS to user ${user._id}, no phone number or Twilio config.`
+    );
     return;
   }
   try {
     await twilioClient.messages.create({
       body: message,
       from: process.env.TWILIO_PHONE_NUMBER,
-      to: user.phoneNumber, // Assumes E.164 format
+      to: user.phoneNumber,  
     });
     console.log(`SMS sent successfully to user ${user._id}.`);
   } catch (error) {
@@ -104,7 +106,9 @@ exports.createReport = async (req, res) => {
     res.status(201).json(savedReport);
   } catch (err) {
     console.error("Error creating report:", err);
-    res.status(500).json({ message: "Error creating report", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error creating report", error: err.message });
   }
 };
 
@@ -120,7 +124,9 @@ exports.getReportByCaseId = async (req, res) => {
     }
     res.status(200).json(report);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching report", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching report", error: err.message });
   }
 };
 
@@ -153,7 +159,9 @@ exports.updateReportStatus = async (req, res) => {
 
     res.status(200).json(updatedReport);
   } catch (err) {
-    res.status(500).json({ message: "Error updating report status", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error updating report status", error: err.message });
   }
 };
 
@@ -177,7 +185,12 @@ exports.updateReportWithAiAnalysis = async (req, res) => {
     const updatedReport = await report.save();
     res.status(200).json(updatedReport);
   } catch (err) {
-    res.status(500).json({ message: "Error updating report with AI analysis", error: err.message });
+    res
+      .status(500)
+      .json({
+        message: "Error updating report with AI analysis",
+        error: err.message,
+      });
   }
 };
 
@@ -218,7 +231,11 @@ exports.getReports = async (req, res) => {
 // Legacy functions, to be deprecated
 exports.updateReport = async (req, res) => {
   try {
-    const updatedReport = await Report.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedReport = await Report.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     res.status(200).json(updatedReport);
   } catch (err) {
     res.status(500).json({ message: "Error updating report", error: err });

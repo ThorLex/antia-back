@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node back/server.js",
-    "dev": "nodemon back/server.js",
-    "test": "jest"
+    "prod": "cross-env NODE_ENV=development env-cmd -f .env.production nodemon back/server.js",
+    "dev": "cross-env NODE_ENV=development env-cmd -f .env.development nodemon back/server.js",
+    "test": "cross-env NODE_ENV=Testing env-cmd -f .env.testing nodemon back/server.js"
   },
-  "keywords": [],
+  "keywords": [
+    "api",
+    "backend",
+    "nodejs",
+    "express"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",

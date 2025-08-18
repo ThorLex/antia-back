@@ -26,9 +26,6 @@ const apiKeyMiddleware = require("../middlewares/apiKeyMiddleware");
  *   schemas:
  *     Report:
  *       type: object
- *       required:
- *         - title
- *         - description
  *       properties:
  *         caseId:
  *           type: string
@@ -257,7 +254,7 @@ router.put("/byCaseId/:caseId/status", authMiddleware, updateReportStatus);
  *                 description: Catégorie déterminée par l'IA.
  *               priority:
  *                 type: string
- *                 description: Priorité déterminée par l'IA (Ex: Faible, Moyenne, Haute).
+ *
  *               summary:
  *                 type: string
  *                 description: Résumé de l'analyse de l'IA.
@@ -271,8 +268,11 @@ router.put("/byCaseId/:caseId/status", authMiddleware, updateReportStatus);
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.post("/ai-analysis/:caseId", apiKeyMiddleware, updateReportWithAiAnalysis);
-
+router.post(
+  "/ai-analysis/:caseId",
+  apiKeyMiddleware,
+  updateReportWithAiAnalysis
+);
 
 // The old routes are kept for now but should be deprecated or removed later.
 router.put("/:id", authMiddleware, updateReport);

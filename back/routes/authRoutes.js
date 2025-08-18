@@ -6,6 +6,71 @@ const {
   forgotPassword,
 } = require("../controllers/authController");
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Reports
+ *   description: API pour la gestion des signalements
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Report:
+ *       type: object
+ *       properties:
+ *         caseId:
+ *           type: string
+ *           description: Identifiant unique du dossier (généré automatiquement).
+ *         title:
+ *           type: string
+ *           description: Titre du signalement.
+ *         description:
+ *           type: string
+ *           description: Description détaillée du signalement.
+ *         user:
+ *           type: string
+ *           description: ID de l'utilisateur qui a créé le signalement.
+ *         sourceURL:
+ *           type: string
+ *           description: URL source du contenu signalé (si applicable).
+ *         attachments:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Liste des chemins vers les pièces jointes.
+ *         status:
+ *           type: string
+ *           description: Statut actuel du signalement.
+ *           enum: [Nouveau, En cours, Traité, Rejeté]
+ *         history:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *               comments:
+ *                 type: string
+ *         aiAnalysis:
+ *           type: object
+ *           properties:
+ *             category:
+ *               type: string
+ *             priority:
+ *               type: string
+ *             summary:
+ *               type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Date de création.
+ */
 /**
  * @swagger
  * /auth/register:
