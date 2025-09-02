@@ -41,46 +41,8 @@ const allowedIPs = [
 
 app.use(IpFilter(allowedIPs, { mode: "allow" }));
 
-app.use((req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const provider = req.headers["x-provider"];
-
-  // Allow unrestricted access to Swagger documentation routes
-  if (req.path.startsWith("/api-docs")) {
-    if (authHeader && authHeader === "Bearer swagger") {
-      req.accessLevel = "swagger"; // Grant Swagger access
-      return next();
-    }
-  }
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized: Missing or invalid token" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  // Check for superkey (admin access)
-  if (token === process.env.SUPER_KEY) {
-    req.accessLevel = "admin"; // Grant admin access
-    return next();
-  }
-
-  // Check for client key (user access)
-  if (!provider) {
-    return res.status(401).json({ message: "Unauthorized: Missing provider" });
-  }
-
-  if (token === process.env.CLIENT_KEY && provider === "your-provider") {
-    req.accessLevel = "user"; // Grant user access
-    return next();
-  }
-
-  return res
-    .status(403)
-    .json({ message: "Forbidden: Invalid token or provider" });
-});
+// Remove token protection for /api-docs and /api/docs-info
+// All documentation routes are now public
 
 app.get("/api/docs-info", (req, res) => {
   const isProduction = process.env.NODE_ENV === "PROD";
