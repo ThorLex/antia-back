@@ -7,8 +7,7 @@ const nodemailer = require("../config/nodemailerConfig");
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ name, email, password });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
@@ -27,7 +26,13 @@ exports.login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const payload = {
+      id: user._id,
+      role: user.role,
+      where_agency: user.where_agency
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.status(200).json({ token });

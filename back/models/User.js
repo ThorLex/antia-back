@@ -19,10 +19,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  where_agency: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Agency",
+    required: true,
+  },
+
   role: {
     type: String,
-    enum: ["user", "moderator", "admin"],
-    default: "user",
+    enum: ["personnel", "admin"],
+    default: "personnel",
   },
   isVerified: {
     type: Boolean,

@@ -1,19 +1,19 @@
 const express = require("express");
-const router = express.Router();
 
 const authRoutes = require("./authRoutes");
-const historyRoutes = require("./historyRoutes");
-const notificationRoutes = require("./notificationRoutes");
+const ClientRoutes = require("./clientRoutes");
+const userRoutes = require("./userRoutes");
+const agencyRoutes = require("./agencyRoutes");
+const app = express();
 
-const { validateInput } = require("../middlewares/validationMiddleware");
-
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("API is running");
 });
 
 // Use routes
-router.use("/auth", authRoutes);
-router.use("/history", historyRoutes);
-router.use("/notifications", notificationRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/agencies", agencyRoutes);
+app.use("/clients", ClientRoutes);
 
-module.exports = router;
+module.exports = app;
