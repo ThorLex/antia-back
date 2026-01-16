@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development env-cmd -f .env.development nodemon back/server.js"
+    "dev": "cross-env NODE_ENV=development env-cmd -f .env.development node back/server.js"
   },
   "keywords": [
     "api",
